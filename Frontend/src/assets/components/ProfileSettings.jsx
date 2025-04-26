@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Settings, ChevronRight, Upload, X } from "lucide-react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Added for navigation
+import { useNavigate } from "react-router-dom";
+
 const ProfileSettings = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +22,8 @@ const ProfileSettings = () => {
   const [message, setMessage] = useState({ text: "", type: "" });
   const [imagePreview, setImagePreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -63,7 +65,7 @@ const ProfileSettings = () => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
-      setErrors((prev) => ({ ...prev, profilePicture: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -146,8 +148,7 @@ const ProfileSettings = () => {
       await axios.post("https://coupon-swap-backend.onrender.com/api/logout", {}, {
         withCredentials: true,
       });
-      // Redirect to login page
-      navigate("/login");
+      navigate("/"); // Changed from "/login" to "/"
     } catch (error) {
       console.error("Error during logout:", error.message);
       setMessage({ text: "Error logging out. Please try again.", type: "error" });
@@ -164,7 +165,6 @@ const ProfileSettings = () => {
             </h1>
             <p className="text-sm md:text-md text-gray-600">Update your details here.</p>
           </div>
-          {/* Added Logout Button */}
           <button
             onClick={handleLogout}
             className="bg-gradient-to-r from-orange-600 to-amber-500 text-white py-2 px-4 rounded-lg font-semibold hover:from-orange-700 hover:to-amber-600 focus:ring-2 focus:ring-orange-600 focus:outline-none transition duration-300 shadow-md"
