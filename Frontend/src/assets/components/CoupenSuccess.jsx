@@ -5,7 +5,7 @@ const SuccessPage = () => {
   const navigate = useNavigate();
 
   const handleViewListing = () => {
-    navigate('/'); 
+    navigate('/browse'); 
   };
 
   return (
