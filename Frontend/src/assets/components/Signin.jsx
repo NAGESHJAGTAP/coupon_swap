@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const SignUp = () => {  
+const SignUp = () => {
   const [formData, setFormData] = useState({
     emailPhone: '',
     password: '',
     confirmPassword: ''
   });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,7 +22,7 @@ const SignUp = () => {
 
   const validateEmailPhone = (input) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{10}$/; 
+    const phoneRegex = /^\d{10}$/;
     return emailRegex.test(input) || phoneRegex.test(input);
   };
 
@@ -28,28 +31,30 @@ const SignUp = () => {
     const { emailPhone, password, confirmPassword } = formData;
 
     if (!validateEmailPhone(emailPhone)) {
-      alert('Please enter a valid email or 10-digit phone number');
+      toast.error('Please enter a valid email or 10-digit phone number');
       return;
     }
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      toast.error('Passwords do not match!');
       return;
     }
 
     if (password.length < 8) {
-      alert('Password must be at least 8 characters long!');
+      toast.error('Password must be at least 8 characters long!');
       return;
     }
 
+    setLoading(true);
     try {
       const response = await axios.post('https://coupon-swap-backend.onrender.com/api/auth/signin', {
         emailPhone,
         password,
-        confirmPassword,  
+        confirmPassword,
       });
 
       if (response.status === 201) {
+        toast.success('Account created successfully!');
         setShowSuccess(true);
         setFormData({
           emailPhone: '',
@@ -59,10 +64,12 @@ const SignUp = () => {
       }
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.message); 
+        toast.error(error.response.data.message);
       } else {
-        alert('An error occurred. Please try again.');
+        toast.error('An error occurred. Please try again.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,11 +162,22 @@ const SignUp = () => {
                 />
               </div>
 
-              <button 
-                type="submit" 
-                className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 transition-all duration-300"
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 transition-all duration-300 flex items-center justify-center"
               >
-                Sign Up
+                {loading ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Signing up...
+                  </>
+                ) : (
+                  'Sign Up'
+                )}
               </button>
             </form>
           ) : (
@@ -177,6 +195,7 @@ const SignUp = () => {
           </p>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
