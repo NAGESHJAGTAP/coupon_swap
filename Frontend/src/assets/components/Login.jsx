@@ -24,9 +24,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('https://coupon-swap-backend.onrender.com/api/auth/login', formData, {
-        withCredentials: true
-      });
+      const response = await axios.post('https://coupon-swap-backend.onrender.com/api/auth/login', formData);
 
       if (response.status === 200) {
         console.log('Login successful:', response.data);
