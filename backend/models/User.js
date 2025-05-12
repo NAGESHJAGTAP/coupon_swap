@@ -11,6 +11,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 8
+  },
+  uniid: {
+    type: String,
+    required: true,
+    unique: true
   }
 });
+
 module.exports = mongoose.model('User', UserSchema);

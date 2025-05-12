@@ -8,6 +8,7 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,6 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const response = await axios.post('https://coupon-swap-backend.onrender.com/api/auth/login', formData, {
@@ -36,6 +38,8 @@ const Login = () => {
       } else {
         setError('Login failed. Please try again.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,9 +108,17 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
+              disabled={loading}
+              className={`w-full bg-orange-500 text-white py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 transform hover:scale-105 active:scale-95 ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-orange-600'}`}
             >
-              Log In
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Logging in...
+                </div>
+              ) : (
+                'Log In'
+              )}
             </button>
           </form>
 
@@ -187,8 +199,3 @@ const Login = () => {
 };
 
 export default Login;
-
-
-
-
-

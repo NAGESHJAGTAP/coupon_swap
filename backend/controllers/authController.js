@@ -2,10 +2,14 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 
 exports.signUp = async (req, res) => {
   try {
-    const { emailPhone, password } = req.body;
+    const { emailPhone, password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+    }
 
     // Check if the user already exists
     const existingUser = await User.findOne({ emailPhone });
@@ -19,7 +23,8 @@ exports.signUp = async (req, res) => {
     // Create user
     const newUser = new User({
       emailPhone,
-      password: hashedPassword
+      password: hashedPassword,
+      uniid: uuidv4()
     });
 
     await newUser.save();
