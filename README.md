@@ -132,7 +132,69 @@ coupon_swap/
 
 ## System Design Diagram
 
-![System Design Diagram](https://via.placeholder.com/800x400?text=System+Design+Diagram)
+┌──────────────────────┐
+│ User Browser │
+│ (Web / Extension) │
+└─────────┬────────────┘
+│
+│ HTTPS Requests (JWT / REST)
+│
+┌─────────▼────────────┐
+│ Frontend │
+│ React + Vite │
+│ Tailwind CSS │
+│ Netlify Deployment │
+└─────────┬────────────┘
+│
+│ API Calls (Axios)
+│
+┌─────────▼────────────┐
+│ Backend API │
+│ Node.js + Express │
+│ Auth & Business │
+│ Socket.io │
+└─────────┬────────────┘
+│
+│ Mongoose ODM
+│
+┌─────────▼────────────┐
+│ MongoDB │
+│ Users │
+│ Coupons │
+│ Transactions │
+└──────────────────────┘
+
+
+---
+
+### Extended System Design
+
+
+
+┌──────────────────────────┐
+│ Chrome Extension │
+│ Popup / Content Script │
+└──────────┬───────────────┘
+│ Secure API Calls
+┌──────────▼───────────────┐
+│ Express Backend │
+│ JWT Authentication │
+│ Coupon APIs │
+│ Socket.io Events │
+└───────┬─────────┬────────┘
+│ │
+┌───────▼──────┐ │ ┌───────────────┐
+│ MongoDB │ │ │ Nodemailer │
+│ User Data │ │ │ Email Alerts │
+│ Coupons │ │ │ Verification │
+└──────────────┘ │ └───────────────┘
+│
+│ Real-time Events
+│
+┌──────▼──────────┐
+│ Socket.io │
+│ Notifications │
+└────────────────┘
 
 The system architecture includes:
 - **Frontend**: React app served via Vite, communicating with backend APIs.
@@ -140,17 +202,6 @@ The system architecture includes:
 - **Database**: MongoDB for storing user data, coupons, and transactions.
 - **Browser Extension**: Integrates with the web app for enhanced user experience.
 - **Deployment**: Frontend on Netlify, backend on a server (e.g., Heroku or AWS).
-
-## Screenshots
-
-### Landing Page
-![Landing Page](https://via.placeholder.com/800x400?text=Landing+Page+Screenshot)
-
-### User Dashboard
-![User Dashboard](https://via.placeholder.com/800x400?text=User+Dashboard+Screenshot)
-
-### Browser Extension Popup
-![Browser Extension](https://via.placeholder.com/400x300?text=Browser+Extension+Popup)
 
 ## Installation
 
