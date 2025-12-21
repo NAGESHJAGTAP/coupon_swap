@@ -131,7 +131,7 @@ coupon_swap/
 ```
 
 ## System Design Diagram
-
+```
 ┌──────────────────────┐
 │ User Browser │
 │ (Web / Extension) │
@@ -163,12 +163,12 @@ coupon_swap/
 │ Coupons │
 │ Transactions │
 └──────────────────────┘
-
+```
 
 ---
 
 ### Extended System Design
-
+```
 
 
 ┌──────────────────────────┐
@@ -195,7 +195,7 @@ coupon_swap/
 │ Socket.io │
 │ Notifications │
 └────────────────┘
-
+```
 The system architecture includes:
 - **Frontend**: React app served via Vite, communicating with backend APIs.
 - **Backend**: Express server handling business logic, authentication, and database interactions.
